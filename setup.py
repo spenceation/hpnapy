@@ -7,7 +7,7 @@ import sys
 if sys.version_info < (3, 4):
     sys.exit('hpnapy requires Python 3.4+')
 
-VERSION = '0.0.0'
+VERSION = '1.0.0'
 
 with open('README.md') as f:
     readme_text = f.read()

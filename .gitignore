@@ -6,3 +6,8 @@ config
 #######################
 *.log
 *.pyc
+
+# Excluded Directories #
+##################
+.idea
+.idea/*
