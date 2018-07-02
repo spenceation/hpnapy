@@ -4,6 +4,7 @@ HPNAPY is a Python3 library to access and interface with HP Network Automation's
 
 More information on HP Network Automation can be found at ([Micro Focus](https://software.microfocus.com/en-us/products/network-automation/overview)).
 
+=======
 ## Usage
 
 Here is an example of connecting through the API and retrieving a list of device groups.
