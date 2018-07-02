@@ -1,0 +1,8 @@
+# Excluded Files #
+##################
+config
+
+# Excluded File Types #
+#######################
+*.log
+*.pyc
