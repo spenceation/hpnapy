@@ -31,58 +31,41 @@ class NAInterface:
     def login(self, username, password):
         self._connector.login(username, password)
 
-    def list_device_groups(self, **kwargs):
+    def add_device(self, **kwargs):
+        """
+        Add a device to the system.
+        """
+        return self._connector.add_device(self, **kwargs)
+
+    def list_device_group(self, **kwargs):
         """
         List device groups that contain one or more devices.
-        :param kwargs:
-        software:   List only device groups for devices running this software
-        vendor:     List only device groups for devices with this vendor name
-        type:       List only device groups for devices of this type (Router, Switch, etc.)
-        model:      List only device groups for devices of this model ("2500 (3000 series)", BIG-IP,
-                    etc.)
-        family:     List only device groups for devices in this device family ("Cisco IOS", F5,
-                    etc.)
-        parent:     List only device groups that are direct descendants of this parent device group
-                    name
         """
-        return self._connector.list_device_groups(**kwargs)
+        return self._connector.list_device_group(**kwargs)
 
-    def list_devices(self, **kwargs):
+    def list_device(self, **kwargs):
         """
         List devices.
-        :param kwargs:
-        software:       List only devices running this software
-        vendor:         List only devices with this vendor name
-        type:           List only devices of this type (Router, Switch, etc.)
-        model:          List only devices of this model ("2500 (3000 series)", BIG-IP, etc.)
-        family:         List only devices in this device family ("Cisco IOS", F5, etc.)
-        group:          List only devices in this device group
-        disabled:       List only devices that are unmanaged.
-        pollexcluded:   List only devices excluded from polling.
-        ids:            List only devices in this comma-separated list of IDs.
-        hierarchy:      List only devices in this hierarchy layer.
-        host:           List only devices with this host name
-        ip:             List only devices with this IP Address
-        realm:          List only devices in this realm
-        startid:        List devices starting with DeviceIDs greater than or equal to this one.
-        limitcount:     Return this many rows (maximum defaults to 10000).
-        vtpdomain:      List only devices in this VTP domain
         """
-        return self._connector.list_devices(**kwargs)
+        return self._connector.list_device(**kwargs)
 
     def show_device(self, **kwargs):
         """
         Show a device's properties.
-        :param kwargs:
-        ip:         a.b.c.d where 0 <= a,b,c,d <= 255. You may optionally prefix the IP with SITE:
-                    where SITE is the name of the Site the device is in.
-        host:       A valid hostname
-        fqdn:       A valid Fully Qualified Domain Name
-        deviceid:   A device ID
-        id:         A device ID
-        nodeuuid:   A NNM node Uuid
         """
         return self._connector.show_device(**kwargs)
+
+    def show_device_config(self, **kwargs):
+        """
+        Show the config most recently retrieved from the specified device.
+        """
+        return self._connector.show_device_config(**kwargs)
+
+    def show_routing(self, **kwargs):
+        """
+        Display a routing table.
+        """
+        return self._connector.show_routing(**kwargs)
 
 
 class _NAConnector:
@@ -219,6 +202,23 @@ class _NAConnector:
             self._raise_hpna_fault_exception()
         return []
 
+    def _get_extracted_single_result(self, api_result):
+        try:
+            if api_result.ResultSet.Row:
+                return api_result.ResultSet.Row[0]
+        except AttributeError:
+            self._raise_hpna_fault_exception()
+        return None
+
+    def _get_api_query_response(self, command_to_call, **kwargs):
+        query_parms = self._get_api_parameters("{0}InputParms".format(command_to_call), **kwargs)
+        try:
+            api_response = self._zeep_interface[command_to_call](query_parms)
+        except ZeepFaultException:
+            _NAConnector._raise_hpna_fault_exception()
+        self._validate_api_response(api_response)
+        return api_response
+
     def _prune_results(self, api_result_set, filtered_key):
         response = []
         try:
@@ -228,30 +228,32 @@ class _NAConnector:
             self._raise_hpna_fault_exception()
         return response
 
-    def list_device_groups(self, **kwargs):
-        query_parms = self._get_api_parameters("list_device_groupInputParms", **kwargs)
-        try:
-            api_response = self._zeep_interface.list_device_group(query_parms)
-        except ZeepFaultException:
-            _NAConnector._raise_hpna_fault_exception()
-        self._validate_api_response(api_response)
+    def add_device(self, **kwargs):
+        api_response = self._get_api_query_response("add_device", **kwargs)
+        extracted_result = self._get_extracted_single_result(api_response)
+        return extracted_result
+
+    def list_device_group(self, **kwargs):
+        api_response = self._get_api_query_response("list_device_group", **kwargs)
         extracted_result = self._get_extracted_result_set(api_response)
         return self._prune_results(extracted_result, "name")
 
-    def list_devices(self, **kwargs):
-        query_parms = self._get_api_parameters("list_deviceInputParms", **kwargs)
-        try:
-            api_response = self._zeep_interface.list_device(query_parms)
-        except ZeepFaultException:
-            _NAConnector._raise_hpna_fault_exception()
-        self._validate_api_response(api_response)
-        return self._get_extracted_result_set(api_response)
+    def list_device(self, **kwargs):
+        api_response = self._get_api_query_response("list_device", **kwargs)
+        extracted_result = self._get_extracted_result_set(api_response)
+        return extracted_result
 
     def show_device(self, **kwargs):
-        query_parms = self._get_api_parameters("show_deviceInputParms", **kwargs)
-        try:
-            api_response = self._zeep_interface.show_device(query_parms)
-        except ZeepFaultException:
-            _NAConnector._raise_hpna_fault_exception()
-        self._validate_api_response(api_response)
-        return api_response
+        api_response = self._get_api_query_response("show_device", **kwargs)
+        extracted_result = self._get_extracted_single_result(api_response)
+        return extracted_result
+
+    def show_device_config(self, **kwargs):
+        api_response = self._get_api_query_response("show_device_config", **kwargs)
+        extracted_result = self._get_extracted_single_result(api_response)
+        return extracted_result
+
+    def show_routing(self, **kwargs):
+        api_response = self._get_api_query_response("show_routing", **kwargs)
+        extracted_result = self._get_extracted_single_result(api_response)
+        return extracted_result

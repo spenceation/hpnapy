@@ -13,7 +13,7 @@ hpna = NAInterface("https://foo.bar")
 hpna.login('username', 'password')
 
 # Retrieve and iterate a list of device groups
-device_groups = hpna.list_device_groups()
+device_groups = hpna.list_device_group()
 for entry in device_groups:
     print(entry)
 
