@@ -17,7 +17,7 @@ Basic usage:
 """
 
 __title__ = 'HPNA Python Library'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __author__ = 'Spencer Ervin'
 __license__ = 'GNU General Public License v3.0'
 
