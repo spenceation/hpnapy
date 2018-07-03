@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
+from os import path
 
 import sys
 
 if sys.version_info < (3, 4):
     sys.exit('hpnapy requires Python 3.4+')
 
-VERSION = '1.0.0'
+VERSION = '1.0.2'
 
-with open('README.md') as f:
+here = path.abspath(path.dirname(__file__))
+
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     readme_text = f.read()
 
-with open('LICENSE') as f:
+with open(path.join(here, 'LICENSE'), encoding='utf-8') as f:
     license_text = f.read()
 
 setup(
