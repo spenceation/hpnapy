@@ -4,6 +4,7 @@ The main interface into the HP Network Automation SOAP API.
 """
 # Import Python Libraries
 from __future__ import absolute_import
+from base64 import b64decode
 
 # Import third party Libraries
 from requests import Session
@@ -27,6 +28,14 @@ class NAInterface:
 
     def __init__(self, url=None, ssl_verify=True):
         self._connector = _NAConnector(url, ssl_verify=ssl_verify)
+
+    @staticmethod
+    def _decode_b64_response(encoded_string):
+        try:
+            decoded_response = b64decode(encoded_string)
+            return decoded_response.decode('utf-8')
+        except ValueError:
+            return encoded_string
 
     def login(self, username, password):
         self._connector.login(username, password)
@@ -734,7 +743,9 @@ class NAInterface:
         return self._connector.execute_single_result_call("show_device", **kwargs)
 
     def show_device_config(self, **kwargs):
-        return self._connector.execute_single_result_call("show_device_config", **kwargs)
+        encoded_response =  self._connector.execute_single_result_call("show_device_config",
+                                                                       **kwargs)
+        return NAInterface._decode_b64_response(encoded_response)
 
     def show_device_credentials(self, **kwargs):
         return self._connector.execute_single_result_call("show_device_credentials", **kwargs)
@@ -1032,7 +1043,10 @@ class _NAConnector:
             if api_result.ResultSet.Row:
                 return api_result.ResultSet.Row[0]
         except AttributeError:
-            self._raise_hpna_fault_exception()
+            try:
+                return api_result.Text
+            except AttributeError:
+                self._raise_hpna_fault_exception()
         return None
 
     def _get_api_query_response(self, command_to_call, **kwargs):
