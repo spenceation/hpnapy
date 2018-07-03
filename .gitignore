@@ -11,3 +11,7 @@ config
 ##################
 .idea
 .idea/*
+.dist
+.dist/*
+hpna.egg-info
+hpna.egg-info/*
