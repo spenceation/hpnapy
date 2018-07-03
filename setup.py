@@ -8,7 +8,7 @@ import sys
 if sys.version_info < (3, 4):
     sys.exit('hpnapy requires Python 3.4+')
 
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 
 here = path.abspath(path.dirname(__file__))
 
