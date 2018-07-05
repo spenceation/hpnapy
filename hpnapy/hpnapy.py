@@ -38,6 +38,31 @@ class NAInterface:
             return encoded_string
 
     def login(self, username, password):
+        """
+        Log in to the API and store the session ID.
+
+        The session ID must be captured to send additional API calls. This function can be run
+        periodically to refresh the session ID.
+
+        Parameters
+        ----------
+        username : str
+            NA username
+        password : str
+            NA password
+
+        Raises
+        ----------
+        HPNAConnectionError
+            Exception stating that there was a failure to authenticate or reach the system.
+
+        Examples
+        ----------
+
+        >>> na = NAInterface('https://foo.bar')
+        >>> na.login('username', 'password')
+
+        """
         self._connector.login(username, password)
 
     def acquire_resource_id(self, **kwargs):
@@ -1023,7 +1048,7 @@ class _NAConnector:
 
     def _validate_api_response(self, api_response):
         try:
-            if api_response.Status == '200':
+            if api_response.Status in ['200', '501']:
                 return
         except AttributeError:
             self._raise_hpna_fault_exception()
