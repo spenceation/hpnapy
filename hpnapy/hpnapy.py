@@ -927,8 +927,13 @@ class NAInterface:
 
     def update_dynamic_group(self, **kwargs):
         return self._connector.execute_single_result_call("update_dynamic_group", **kwargs)
-
-
+    
+    def snmp_get(self, **kwargs):
+        return self._connector.execute_single_result_call("snmp_get", **kwargs)
+    
+    def snmp_set(self, **kwargs):
+        return self._connector.execute_single_result_call("snmp_set", **kwargs)
+    
 class _NAConnector:
 
     _wsdl_url_path = "/soap?wsdl"
