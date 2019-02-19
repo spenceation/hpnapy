@@ -839,7 +839,7 @@ class NAInterface:
         return self._connector.execute_single_result_call("show_policy", **kwargs)
 
     def show_policy_compliance(self, **kwargs):
-        return self._connector.execute_single_result_call("show_policy_compliance", **kwargs)
+        return self._connector.execute_multi_result_call("show_policy_compliance", **kwargs)
 
     def show_policy_rule(self, **kwargs):
         return self._connector.execute_single_result_call("show_policy_rule", **kwargs)
@@ -1053,7 +1053,7 @@ class _NAConnector:
 
     def _validate_api_response(self, api_response):
         try:
-            if api_response.Status in ['200', '501']:
+            if api_response.Status in ['200', '204', '501']:
                 return
         except AttributeError:
             self._raise_hpna_fault_exception()
