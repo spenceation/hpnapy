@@ -839,7 +839,7 @@ class NAInterface:
         return self._connector.execute_single_result_call("show_policy", **kwargs)
 
     def show_policy_compliance(self, **kwargs):
-        return self._connector.execute_single_result_call("show_policy_compliance", **kwargs)
+        return self._connector.execute_multi_result_call("show_policy_compliance", **kwargs)
 
     def show_policy_rule(self, **kwargs):
         return self._connector.execute_single_result_call("show_policy_rule", **kwargs)
