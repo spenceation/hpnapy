@@ -80,6 +80,12 @@ class NAInterface:
     def add_authentication(self, **kwargs):
         return self._connector.execute_single_result_call("add_authentication", **kwargs)
 
+    def add_change_plan(self, **kwargs):
+        """
+        Added in NA 10.21.
+        """
+        return self._connector.execute_single_result_call("add_change_plan", **kwargs)
+
     def add_command_script(self, **kwargs):
         return self._connector.execute_single_result_call("add_command_script", **kwargs)
 
@@ -206,6 +212,12 @@ class NAInterface:
     def del_cache(self, **kwargs):
         return self._connector.execute_single_result_call("del_cache", **kwargs)
 
+    def del_change_plan(self, **kwargs):
+        """
+        Added in NA 10.21.
+        """
+        return self._connector.execute_single_result_call("del_change_plan", **kwargs)
+
     def del_device(self, **kwargs):
         return self._connector.execute_single_result_call("del_device", **kwargs)
 
@@ -299,6 +311,12 @@ class NAInterface:
     def delete_rule_exception(self, **kwargs):
         return self._connector.execute_single_result_call("delete_rule_exception", **kwargs)
 
+    def deploy_change_plan(self, **kwargs):
+        """
+        Added in NA 10.21.
+        """
+        return self._connector.execute_single_result_call("deploy_change_plan", **kwargs)
+
     def deploy_config(self, **kwargs):
         return self._connector.execute_single_result_call("deploy_config", **kwargs)
 
@@ -349,6 +367,12 @@ class NAInterface:
 
     def list_basicip(self, **kwargs):
         return self._connector.execute_multi_result_call("list_basicip", **kwargs)
+
+    def list_change_plan(self, **kwargs):
+        """
+        Added in NA 10.21.
+        """
+        return self._connector.execute_multi_result_call("list_change_plan", **kwargs)
 
     def list_config(self, **kwargs):
         return self._connector.execute_multi_result_call("list_config", **kwargs)
@@ -584,6 +608,12 @@ class NAInterface:
     def mod_caseinsensitive(self, **kwargs):
         return self._connector.execute_single_result_call("mod_caseinsensitive", **kwargs)
 
+    def mod_change_plan(self, **kwargs):
+        """
+        Added in NA 10.21.
+        """
+        return self._connector.execute_single_result_call("mod_change_plan", **kwargs)
+
     def mod_command_script(self, **kwargs):
         return self._connector.execute_single_result_call("mod_command_script", **kwargs)
 
@@ -695,6 +725,9 @@ class NAInterface:
     def provision_device(self, **kwargs):
         return self._connector.execute_single_result_call("provision_device", **kwargs)
 
+    def reboot_device(self, **kwargs):
+        return self._connector.execute_single_result_call("reboot_device", **kwargs)
+
     def release_resource_id(self, **kwargs):
         return self._connector.execute_single_result_call("release_resource_id", **kwargs)
 
@@ -757,6 +790,12 @@ class NAInterface:
 
     def show_caseinsensitive(self, **kwargs):
         return self._connector.execute_single_result_call("show_caseinsensitive", **kwargs)
+
+    def show_change_plan(self, **kwargs):
+        """
+        Added in NA 10.21.
+        """
+        return self._connector.execute_single_result_call("show_change_plan", **kwargs)
 
     def show_config(self, **kwargs):
         return self._connector.execute_single_result_call("show_config", **kwargs)
@@ -868,6 +907,12 @@ class NAInterface:
     def show_rule_condition(self, **kwargs):
         return self._connector.execute_single_result_call("show_rule_condition", **kwargs)
 
+    def show_rule_compliance(self, **kwargs):
+        """
+        Added in NA 10.40.
+        """
+        return self._connector.execute_multi_result_call("show_rule_compliance", **kwargs)
+
     def show_script(self, **kwargs):
         return self._connector.execute_single_result_call("show_script", **kwargs)
 
@@ -915,6 +960,9 @@ class NAInterface:
 
     def stop_task_all(self, **kwargs):
         return self._connector.execute_single_result_call("stop_task_all", **kwargs)
+
+    def synchronize(self, **kwargs):
+        return self._connector.execute_single_result_call("synchronize", **kwargs)
 
     def test_config(self, **kwargs):
         return self._connector.execute_single_result_call("test_config", **kwargs)
