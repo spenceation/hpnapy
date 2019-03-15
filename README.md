@@ -2,7 +2,7 @@ HPNAPY
 ===========
 HPNAPY is a Python3 library to access and interface with HP Network Automation's SOAP API.
 
-This library has bee developed testing against HP Network Automation 10.20 and greater.
+This library has bee developed testing against HP Network Automation 2018.11 and greater.
 
 More information on HP Network Automation can be found at ([Micro Focus](https://software.microfocus.com/en-us/products/network-automation/overview)).
 
