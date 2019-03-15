@@ -1048,7 +1048,7 @@ class _NAConnector:
 
     def _validate_api_response(self, api_response):
         try:
-            if api_response.Status in ['200', '204', '501']:
+            if api_response.Status in ['200', '204', '221', '501']:
                 return
         except AttributeError:
             self._raise_hpna_fault_exception()
