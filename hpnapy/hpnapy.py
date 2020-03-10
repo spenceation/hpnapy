@@ -1124,7 +1124,7 @@ class _NAConnector:
             try:
                 return api_result.Text
             except AttributeError:
-                pass None
+                pass
         return None
 
     def _get_api_query_response(self, command_to_call, **kwargs):
