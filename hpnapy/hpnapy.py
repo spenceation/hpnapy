@@ -1113,7 +1113,7 @@ class _NAConnector:
             if api_result.ResultSet.Row:
                 return api_result.ResultSet.Row
         except AttributeError:
-            self._raise_hpna_fault_exception()
+            pass
         return []
 
     def _get_extracted_single_result(self, api_result):
@@ -1124,7 +1124,7 @@ class _NAConnector:
             try:
                 return api_result.Text
             except AttributeError:
-                self._raise_hpna_fault_exception()
+                pass None
         return None
 
     def _get_api_query_response(self, command_to_call, **kwargs):
