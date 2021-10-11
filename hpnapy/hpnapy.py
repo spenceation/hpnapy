@@ -16,6 +16,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import xml.etree.ElementTree as ET
 from zeep import Client as ZeepClient
 from zeep import Transport as ZeepTransport
+from zeep import Settings as ZeepSettings
 from zeep.exceptions import Fault as ZeepFaultException
 
 # Import hpnapy Libraries
@@ -1059,7 +1060,8 @@ class _NAConnector:
     def _get_zeep_client(self, transport_to_bind=None):
         if not transport_to_bind:
             raise HPNAConnectionError("SOAP client cannot be instantiated without a transport.")
-        zeep_client = ZeepClient(wsdl=self._wsdl_url, transport=transport_to_bind)
+        settings = ZeepSettings(strict=False)
+        zeep_client = ZeepClient(wsdl=self._wsdl_url, transport=transport_to_bind, settings=settings)
         return zeep_client
 
     def _get_zeep_interface(self):
